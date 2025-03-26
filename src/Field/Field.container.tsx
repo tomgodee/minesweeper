@@ -13,12 +13,13 @@ const findSurroundingTiles = (
 ): Tile[] => {
   const { line, column } = position;
   const surroundingTiles = [];
-  const bound = plot.length - 1;
+  const lineBound = plot.length - 1;
+  const columnBound = plot[0].length - 1;
 
   const isTileNotOnFirstLine = line - 1 >= 0;
   const isTileNotOnFirstColumn = column - 1 >= 0;
-  const isTileNotOnLastLine = line + 1 <= bound;
-  const isTileNotOnLastColumn = column + 1 <= bound;
+  const isTileNotOnLastLine = line + 1 <= lineBound;
+  const isTileNotOnLastColumn = column + 1 <= columnBound;
 
   if (isTileNotOnFirstLine && isTileNotOnFirstColumn) {
     const upperLeftTile = plot[line - 1][column - 1];
@@ -59,7 +60,6 @@ const findSurroundingTiles = (
 /**
  * Find the number of surrounding mines of a tile
  */
-// TODO: the bound should be updated to support both dimensions
 const calculateTileMineCount = (
   plot: Tile[][],
   position: { line: number; column: number }
@@ -92,9 +92,9 @@ const transformTilesToPlot = (
   size: { width: number; height: number }
 ): Tile[][] => {
   const plot: Tile[][] = [];
-  for (let i = 0; i < size.width; i += 1) {
+  for (let i = 0; i < size.height; i += 1) {
     plot.push([]);
-    for (let j = 0; j < size.height; j += 1) {
+    for (let j = 0; j < size.width; j += 1) {
       plot[i].push(tiles[size.width * i + j]);
     }
   }
