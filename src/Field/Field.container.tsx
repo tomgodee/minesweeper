@@ -156,6 +156,15 @@ const openTileArea = (tile: Tile, plot: Tile[][]) => {
   return plot;
 };
 
+const openAllMinedTiles = (plot: Tile[][]) => {
+  return plot.map((line) =>
+    line.map((tile) => {
+      if (tile.mineCountSymbol === "bomb") tile.open = true;
+      return tile;
+    })
+  );
+};
+
 function FieldContainer(props: FieldContainerProps) {
   const { settings } = props;
 
@@ -164,6 +173,9 @@ function FieldContainer(props: FieldContainerProps) {
   const clickTile = (clickedTile: Tile) => {
     if (clickedTile.mineCountSymbol === "0") {
       const newPlot = openTileArea(clickedTile, plot).map((line) => [...line]);
+      setPlot(newPlot);
+    } else if (clickedTile.mineCountSymbol === "bomb") {
+      const newPlot = openAllMinedTiles(plot);
       setPlot(newPlot);
     } else {
       plot[clickedTile.line][clickedTile.column].open = true;
@@ -186,9 +198,9 @@ function FieldContainer(props: FieldContainerProps) {
       height: settings.height,
     });
 
-    const plotWithSymbol = calculateMineCount(plot);
+    const plotWithMineCount = calculateMineCount(plot);
 
-    setPlot(plotWithSymbol);
+    setPlot(plotWithMineCount);
   }, [settings]);
 
   return <Field plot={plot} handleClickTile={clickTile} />;
