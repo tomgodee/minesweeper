@@ -16,8 +16,8 @@ export interface Settings {
 function App() {
   const [settings, setSettings] = useState<Settings>({
     width: 3,
-    height: 3,
-    mineCount: 1,
+    height: 4,
+    mineCount: 3,
     difficulty: "easy",
   });
   return (

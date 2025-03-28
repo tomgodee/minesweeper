@@ -1,7 +1,39 @@
 .tile {
   padding: 0.75rem;
-  border: 2px solid black;
+  border: 1px solid black;
   flex: 1 1 100%;
   min-width: 40px;
   min-height: 40px;
+}
+
+.close {
+  &:hover {
+    cursor: pointer;
+  }
+
+  &.even {
+    background-color: var(--mui-palette-grass-main);
+  }
+
+  &.even:hover {
+    background-color: var(--mui-palette-grass-light);
+  }
+
+  &.odd {
+    background-color: var(--mui-palette-grass-dark);
+  }
+
+  &.odd:hover {
+    background-color: var(--mui-palette-grass-light);
+  }
+}
+
+.open {
+  &.even {
+    background-color: var(--mui-palette-ground-main);
+  }
+
+  &.odd {
+    background-color: var(--mui-palette-ground-light);
+  }
 }
