@@ -1,10 +1,12 @@
 import Box from "@mui/material/Box";
 import "./Tile.scss";
 import type { Tile } from "../types";
+import FlagIcon from "@mui/icons-material/Flag";
 
 interface TileProps {
   tile: Tile;
   handleClick: (tile: Tile) => void;
+  handleRightClickTile: (tile: Tile) => void;
 }
 
 const oddOrEven = (tile: Tile): string => {
@@ -21,8 +23,16 @@ const getBorder = (tile: Tile): string => {
   return classNames;
 };
 
+const displaySymbol = (tile: Tile) => {
+  if (tile.open) {
+    return tile.mineCountSymbol === "bomb" ? "B" : tile.mineCountSymbol;
+  } else {
+    return tile.flagged ? <FlagIcon color="error" /> : "";
+  }
+};
+
 function Tile(props: TileProps) {
-  const { tile, handleClick } = props;
+  const { tile, handleClick, handleRightClickTile } = props;
 
   if (!tile.open)
     return (
@@ -31,8 +41,11 @@ function Tile(props: TileProps) {
         onClick={() => handleClick(tile)}
         onContextMenu={(e) => {
           e.preventDefault();
+          handleRightClickTile(tile);
         }}
-      ></Box>
+      >
+        {displaySymbol(tile)}
+      </Box>
     );
   else
     return (

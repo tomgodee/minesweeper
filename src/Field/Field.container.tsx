@@ -5,6 +5,7 @@ import Field from "./Field";
 
 interface FieldContainerProps {
   settings: Settings;
+  setFlagCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const findSurroundingTiles = (
@@ -117,6 +118,7 @@ const generateTiles = (size: { width: number; height: number }): Tile[] => {
         down: false,
         left: false,
         right: false,
+        flagged: false,
       });
     }
   }
@@ -189,8 +191,14 @@ const calculateBorder = (plot: Tile[][]) => {
   return plot;
 };
 
+const flagTile = (tile: Tile, plot: Tile[][]) => {
+  const { line, column } = tile;
+  plot[line][column].flagged = !plot[line][column].flagged;
+  return plot;
+};
+
 function FieldContainer(props: FieldContainerProps) {
-  const { settings } = props;
+  const { settings, setFlagCount } = props;
 
   const [plot, setPlot] = useState<Tile[][]>([[]]);
 
@@ -206,6 +214,18 @@ function FieldContainer(props: FieldContainerProps) {
     } else {
       plot[clickedTile.line][clickedTile.column].open = true;
       const newPlot = plot.map((line) => [...line]);
+      setPlot(newPlot);
+    }
+  };
+
+  const rightClickTile = (clickedTile: Tile) => {
+    if (!clickedTile.open && !clickedTile.flagged) {
+      setFlagCount((prevState) => prevState - 1);
+      const newPlot = flagTile(clickedTile, plot);
+      setPlot(newPlot);
+    } else if (clickedTile.flagged) {
+      setFlagCount((prevState) => prevState + 1);
+      const newPlot = flagTile(clickedTile, plot);
       setPlot(newPlot);
     }
   };
@@ -229,7 +249,13 @@ function FieldContainer(props: FieldContainerProps) {
     setPlot(plotWithMineCount);
   }, [settings]);
 
-  return <Field plot={plot} handleClickTile={clickTile} />;
+  return (
+    <Field
+      plot={plot}
+      handleClickTile={clickTile}
+      handleRightClickTile={rightClickTile}
+    />
+  );
 }
 
 export default FieldContainer;

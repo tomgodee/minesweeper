@@ -4,10 +4,11 @@ import { Difficulty, Settings } from "../App";
 
 interface HeaderContainerProps {
   setSettings: React.Dispatch<React.SetStateAction<Settings>>;
+  flagCount: number;
 }
 
 function HeaderContainer(props: HeaderContainerProps) {
-  const { setSettings } = props;
+  const { setSettings, flagCount } = props;
   const [open, setOpen] = useState(false);
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
 
@@ -63,6 +64,7 @@ function HeaderContainer(props: HeaderContainerProps) {
       difficulty={difficulty}
       setDifficulty={setDifficulty}
       handleConfirmDifficulty={handleConfirmDifficulty}
+      flagCount={flagCount}
     />
   );
 }

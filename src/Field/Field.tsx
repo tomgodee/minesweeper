@@ -6,10 +6,11 @@ import "./Field.scss";
 interface FieldProps {
   plot: Tile[][];
   handleClickTile: (tile: Tile) => void;
+  handleRightClickTile: (tile: Tile) => void;
 }
 
 function Field(props: FieldProps) {
-  const { plot, handleClickTile } = props;
+  const { plot, handleClickTile, handleRightClickTile } = props;
   return (
     <Box className="field">
       {plot.map((line, index) => {
@@ -18,6 +19,7 @@ function Field(props: FieldProps) {
             line={line}
             key={index}
             handleClickTile={handleClickTile}
+            handleRightClickTile={handleRightClickTile}
           />
         );
       })}

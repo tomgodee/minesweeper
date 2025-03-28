@@ -5,12 +5,15 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 // import DialogContentText from "@mui/material/DialogContentText";
+import FlagIcon from "@mui/icons-material/Flag";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import Typography from "@mui/material/Typography";
 import { Difficulty } from "../App";
+import "./Header.scss";
 
 interface HeaderProps {
   open: boolean;
@@ -18,26 +21,31 @@ interface HeaderProps {
   difficulty: Difficulty;
   setDifficulty: React.Dispatch<React.SetStateAction<Difficulty>>;
   handleConfirmDifficulty: (difficulty: Difficulty) => void;
+  flagCount: number;
 }
 
 function Header(props: HeaderProps) {
-  const { open, setOpen, handleConfirmDifficulty, difficulty, setDifficulty } =
-    props;
+  const {
+    open,
+    setOpen,
+    handleConfirmDifficulty,
+    difficulty,
+    setDifficulty,
+    flagCount,
+  } = props;
 
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" padding="1rem">
+      <Box className="header">
+        <Box display="flex">
+          <Typography>{flagCount}</Typography>
+          <FlagIcon color="error" />
+        </Box>
         <IconButton onClick={() => setOpen((prevState) => !prevState)}>
           <SettingsIcon />
         </IconButton>
       </Box>
-      <Dialog
-        open={open}
-        // TransitionComponent={Transition}
-        // slots
-        // onClose={handleClose}
-        // slots={{ transition: <Slide direction="up" /> }}
-      >
+      <Dialog open={open}>
         <DialogTitle>Choose a difficulty</DialogTitle>
         <DialogContent>
           <RadioGroup

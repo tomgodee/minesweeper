@@ -20,11 +20,13 @@ function App() {
     mineCount: 3,
     difficulty: "easy",
   });
+  const [flagCount, setFlagCount] = useState<number>(settings.mineCount);
+
   return (
     <>
       <Box>
-        <Header setSettings={setSettings} />
-        <Field settings={settings} />
+        <Header setSettings={setSettings} flagCount={flagCount} />
+        <Field settings={settings} setFlagCount={setFlagCount} />
       </Box>
     </>
   );
