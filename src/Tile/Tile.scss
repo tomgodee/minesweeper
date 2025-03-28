@@ -1,6 +1,5 @@
 .tile {
   padding: 0.75rem;
-  border: 1px solid black;
   flex: 1 1 100%;
   min-width: 40px;
   min-height: 40px;
@@ -25,6 +24,19 @@
 
   &.odd:hover {
     background-color: var(--mui-palette-grass-light);
+  }
+
+  &.up {
+    border-top: 2px solid #98be5b;
+  }
+  &.down {
+    border-bottom: 2px solid #98be5b;
+  }
+  &.left {
+    border-left: 2px solid #98be5b;
+  }
+  &.right {
+    border-right: 2px solid #98be5b;
   }
 }
 

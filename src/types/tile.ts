@@ -4,6 +4,10 @@ interface Tile {
   mineCountSymbol: MineCountSymbol;
   mineScore: number;
   open: boolean;
+  up: boolean;
+  down: boolean;
+  left: boolean;
+  right: boolean;
 }
 
 type MineCountSymbol =

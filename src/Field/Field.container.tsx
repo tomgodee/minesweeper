@@ -113,6 +113,10 @@ const generateTiles = (size: { width: number; height: number }): Tile[] => {
         mineCountSymbol: "0",
         mineScore: Math.random(),
         open: false,
+        up: false,
+        down: false,
+        left: false,
+        right: false,
       });
     }
   }
@@ -165,6 +169,26 @@ const openAllMinedTiles = (plot: Tile[][]) => {
   );
 };
 
+const calculateBorder = (plot: Tile[][]) => {
+  for (let line = 0; line < plot.length; line += 1) {
+    for (let column = 0; column < plot[line].length; column += 1) {
+      plot[line][column].up =
+        line - 1 >= 0 ? plot[line - 1][column].open : false;
+
+      if (line + 1 <= plot.length - 1)
+        plot[line][column].down = plot[line + 1][column].open;
+
+      if (column - 1 >= 0)
+        plot[line][column].left = plot[line][column - 1].open;
+
+      if (column + 1 <= plot[line].length - 1)
+        plot[line][column].right = plot[line][column + 1].open;
+    }
+  }
+
+  return plot;
+};
+
 function FieldContainer(props: FieldContainerProps) {
   const { settings } = props;
 
@@ -172,7 +196,9 @@ function FieldContainer(props: FieldContainerProps) {
 
   const clickTile = (clickedTile: Tile) => {
     if (clickedTile.mineCountSymbol === "0") {
-      const newPlot = openTileArea(clickedTile, plot).map((line) => [...line]);
+      const newPlot = calculateBorder(openTileArea(clickedTile, plot)).map(
+        (line) => [...line]
+      );
       setPlot(newPlot);
     } else if (clickedTile.mineCountSymbol === "bomb") {
       const newPlot = openAllMinedTiles(plot);
