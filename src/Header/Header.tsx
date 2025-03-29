@@ -1,38 +1,24 @@
 import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
 // import DialogContentText from "@mui/material/DialogContentText";
 import FlagIcon from "@mui/icons-material/Flag";
-import DialogTitle from "@mui/material/DialogTitle";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import Typography from "@mui/material/Typography";
+import type { Settings } from "../App";
 import { Difficulty } from "../App";
+import SettingsComponent from "../Settings";
 import "./Header.scss";
 
 interface HeaderProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  difficulty: Difficulty;
-  setDifficulty: React.Dispatch<React.SetStateAction<Difficulty>>;
-  handleConfirmDifficulty: (difficulty: Difficulty) => void;
+  confirmDifficulty: (difficulty: Difficulty) => void;
   flagCount: number;
+  settings: Settings;
 }
 
 function Header(props: HeaderProps) {
-  const {
-    open,
-    setOpen,
-    handleConfirmDifficulty,
-    difficulty,
-    setDifficulty,
-    flagCount,
-  } = props;
+  const { open, setOpen, confirmDifficulty, flagCount, settings } = props;
 
   return (
     <>
@@ -42,46 +28,15 @@ function Header(props: HeaderProps) {
           <FlagIcon color="error" />
         </Box>
         <IconButton onClick={() => setOpen((prevState) => !prevState)}>
-          <SettingsIcon />
+          <SettingsIcon color="primary" />
         </IconButton>
       </Box>
-      <Dialog open={open}>
-        <DialogTitle>Choose a difficulty</DialogTitle>
-        <DialogContent>
-          <RadioGroup
-            defaultValue="easy"
-            name="radio-buttons-group"
-            value={difficulty}
-            onChange={(event) => {
-              setDifficulty(event.target.value as Difficulty);
-            }}
-          >
-            <FormControlLabel value="easy" control={<Radio />} label="Easy" />
-            <FormControlLabel
-              value="medium"
-              control={<Radio />}
-              label="Medium"
-            />
-            <FormControlLabel value="hard" control={<Radio />} label="Hard" />
-            <FormControlLabel
-              value="custom"
-              control={<Radio />}
-              label="Custom"
-            />
-          </RadioGroup>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button
-            onClick={() => {
-              handleConfirmDifficulty(difficulty);
-              setOpen(false);
-            }}
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <SettingsComponent
+        open={open}
+        setOpen={setOpen}
+        handleConfirm={confirmDifficulty}
+        settings={settings}
+      />
     </>
   );
 }

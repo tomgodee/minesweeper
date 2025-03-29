@@ -6,6 +6,7 @@ import Field from "./Field";
 import Header from "./Header";
 
 export type Difficulty = "easy" | "medium" | "hard" | "custom";
+
 export interface Settings {
   width: number;
   height: number;
@@ -25,7 +26,12 @@ function App() {
   return (
     <>
       <Box>
-        <Header setSettings={setSettings} flagCount={flagCount} />
+        <Header
+          settings={settings}
+          setSettings={setSettings}
+          flagCount={flagCount}
+          setFlagCount={setFlagCount}
+        />
         <Field settings={settings} setFlagCount={setFlagCount} />
       </Box>
     </>

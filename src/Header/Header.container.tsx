@@ -1,26 +1,28 @@
 import { useState } from "react";
-import Header from "./Header";
 import { Difficulty, Settings } from "../App";
+import Header from "./Header";
 
 interface HeaderContainerProps {
+  settings: Settings;
   setSettings: React.Dispatch<React.SetStateAction<Settings>>;
   flagCount: number;
+  setFlagCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function HeaderContainer(props: HeaderContainerProps) {
-  const { setSettings, flagCount } = props;
+  const { setSettings, flagCount, settings, setFlagCount } = props;
   const [open, setOpen] = useState(false);
-  const [difficulty, setDifficulty] = useState<Difficulty>("easy");
 
-  const handleConfirmDifficulty = (difficulty: Difficulty) => {
+  const confirmDifficulty = (difficulty: Difficulty) => {
     switch (difficulty) {
       case "easy":
         setSettings({
           width: 3,
-          height: 3,
-          mineCount: 1,
+          height: 4,
+          mineCount: 3,
           difficulty: "easy",
         });
+        setFlagCount(3);
         break;
       case "medium":
         setSettings({
@@ -29,6 +31,7 @@ function HeaderContainer(props: HeaderContainerProps) {
           mineCount: 8,
           difficulty: "medium",
         });
+        setFlagCount(8);
         break;
       case "hard":
         setSettings({
@@ -37,6 +40,7 @@ function HeaderContainer(props: HeaderContainerProps) {
           mineCount: 40,
           difficulty: "hard",
         });
+        setFlagCount(40);
         break;
       case "custom":
         setSettings({
@@ -45,6 +49,7 @@ function HeaderContainer(props: HeaderContainerProps) {
           mineCount: 3,
           difficulty: "custom",
         });
+        setFlagCount(3);
         break;
       default:
         //TODO: Make a noti saying smth has gone wrong
@@ -54,6 +59,7 @@ function HeaderContainer(props: HeaderContainerProps) {
           mineCount: 1,
           difficulty: "easy",
         });
+        setFlagCount(1);
     }
   };
 
@@ -61,10 +67,9 @@ function HeaderContainer(props: HeaderContainerProps) {
     <Header
       open={open}
       setOpen={setOpen}
-      difficulty={difficulty}
-      setDifficulty={setDifficulty}
-      handleConfirmDifficulty={handleConfirmDifficulty}
+      confirmDifficulty={confirmDifficulty}
       flagCount={flagCount}
+      settings={settings}
     />
   );
 }
