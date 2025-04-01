@@ -5,7 +5,7 @@ import { useState } from "react";
 import Field from "./Field";
 import Header from "./Header";
 
-export type Difficulty = "easy" | "medium" | "hard" | "custom";
+export type Difficulty = "easy" | "medium" | "hard" | "custom" | "surprise me";
 
 export interface Settings {
   width: number;

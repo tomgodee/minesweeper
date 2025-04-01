@@ -5,20 +5,19 @@ import FlagIcon from "@mui/icons-material/Flag";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import type { Settings } from "../App";
-import { Difficulty } from "../App";
 import SettingsComponent from "../Settings";
 import "./Header.scss";
 
 interface HeaderProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  confirmDifficulty: (difficulty: Difficulty) => void;
+  confirmSettings: (settings: Settings) => void;
   flagCount: number;
   settings: Settings;
 }
 
 function Header(props: HeaderProps) {
-  const { open, setOpen, confirmDifficulty, flagCount, settings } = props;
+  const { open, setOpen, confirmSettings, flagCount, settings } = props;
 
   return (
     <>
@@ -34,7 +33,7 @@ function Header(props: HeaderProps) {
       <SettingsComponent
         open={open}
         setOpen={setOpen}
-        handleConfirm={confirmDifficulty}
+        handleConfirm={confirmSettings}
         settings={settings}
       />
     </>

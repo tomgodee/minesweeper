@@ -6,7 +6,7 @@ import SettingsComponent from "./Settings";
 interface SettingsContainerProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handleConfirm: (difficulty: Difficulty) => void;
+  handleConfirm: (settings: Settings) => void;
   settings: Settings;
 }
 
