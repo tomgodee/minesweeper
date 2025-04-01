@@ -143,7 +143,7 @@ const generateMines = (tiles: Tile[], mineCount: Settings["mineCount"]) => {
     });
 };
 
-const openTileArea = (tile: Tile, plot: Tile[][]) => {
+const openTileArea = (tile: Tile, plot: Tile[][], wrongFlagCount = 0) => {
   plot[tile.line][tile.column].open = true;
 
   const surroundingUnopenTiles = findSurroundingTiles(plot, {
@@ -152,14 +152,20 @@ const openTileArea = (tile: Tile, plot: Tile[][]) => {
   }).filter((tile) => !tile.open);
 
   surroundingUnopenTiles.map((tile) => {
+    // Tile has been flagged but doesn't have a mine
+    if (tile.flagged) {
+      tile.flagged = false;
+      wrongFlagCount += 1;
+    }
+
     if (tile.mineCountSymbol === "0") {
-      plot = openTileArea(tile, plot);
+      ({ plot, wrongFlagCount } = openTileArea(tile, plot, wrongFlagCount));
     } else {
       plot[tile.line][tile.column].open = true;
     }
   });
 
-  return plot;
+  return { plot, wrongFlagCount };
 };
 
 const openAllMinedTiles = (plot: Tile[][]) => {
@@ -203,11 +209,13 @@ function FieldContainer(props: FieldContainerProps) {
   const [plot, setPlot] = useState<Tile[][]>([[]]);
 
   const clickTile = (clickedTile: Tile) => {
+    if (clickedTile.flagged) return;
+
     if (clickedTile.mineCountSymbol === "0") {
-      const newPlot = calculateBorder(openTileArea(clickedTile, plot)).map(
-        (line) => [...line]
-      );
-      setPlot(newPlot);
+      const { plot: newPlot, wrongFlagCount } = openTileArea(clickedTile, plot);
+      const plotWithBorder = calculateBorder(newPlot).map((line) => [...line]);
+      setPlot(plotWithBorder);
+      setFlagCount((prevState) => prevState + wrongFlagCount);
     } else if (clickedTile.mineCountSymbol === "bomb") {
       const newPlot = openAllMinedTiles(plot);
       setPlot(newPlot);
@@ -221,13 +229,11 @@ function FieldContainer(props: FieldContainerProps) {
   const rightClickTile = (clickedTile: Tile) => {
     if (!clickedTile.open && !clickedTile.flagged) {
       setFlagCount((prevState) => prevState - 1);
-      const newPlot = flagTile(clickedTile, plot);
-      setPlot(newPlot);
     } else if (clickedTile.flagged) {
       setFlagCount((prevState) => prevState + 1);
-      const newPlot = flagTile(clickedTile, plot);
-      setPlot(newPlot);
     }
+    const newPlot = flagTile(clickedTile, plot);
+    setPlot(newPlot);
   };
 
   // TODO: This effect should run when the first click happens, not on mounted
