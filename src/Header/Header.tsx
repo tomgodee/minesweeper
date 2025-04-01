@@ -1,8 +1,8 @@
+import FlagIcon from "@mui/icons-material/Flag";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
-// import DialogContentText from "@mui/material/DialogContentText";
-import FlagIcon from "@mui/icons-material/Flag";
 import IconButton from "@mui/material/IconButton";
+import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import type { Settings } from "../App";
 import SettingsComponent from "../Settings";
@@ -22,9 +22,12 @@ function Header(props: HeaderProps) {
   return (
     <>
       <Box className="header">
-        <Box display="flex">
-          <Typography>{flagCount}</Typography>
+        <Box display="flex" alignItems="center">
+          <Typography className="flagCount">{flagCount}</Typography>
           <FlagIcon color="error" />
+        </Box>
+        <Box sx={{ width: "100%", margin: "0 2rem" }}>
+          <LinearProgress variant="determinate" value={50} />
         </Box>
         <IconButton onClick={() => setOpen((prevState) => !prevState)}>
           <SettingsIcon color="primary" />

@@ -9,6 +9,7 @@ interface Tile {
   left: boolean;
   right: boolean;
   flagged: boolean;
+  exploded: boolean;
 }
 
 type MineCountSymbol =

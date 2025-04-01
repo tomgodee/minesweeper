@@ -119,6 +119,7 @@ const generateTiles = (size: { width: number; height: number }): Tile[] => {
         left: false,
         right: false,
         flagged: false,
+        exploded: false,
       });
     }
   }
@@ -247,6 +248,8 @@ function FieldContainer(props: FieldContainerProps) {
       setPlot(plotWithBorder);
       setFlagCount((prevState) => prevState + wrongFlagCount);
     } else if (clickedTile.mineCountSymbol === "bomb") {
+      plot[clickedTile.line][clickedTile.column].exploded = true;
+      console.log("clickedTile", clickedTile);
       const newPlot = openAllMinedTiles(plot);
       const plotWithBorder = calculateAllTilesBorder(newPlot);
       setPlot(plotWithBorder);

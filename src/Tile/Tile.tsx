@@ -35,6 +35,8 @@ const getMineCountColor = (count: Tile["mineCountSymbol"]) => {
   if (count === "8") return "eight";
 };
 
+const isExploded = (tile: Tile) => (tile.exploded ? " exploded" : "");
+
 function Tile(props: TileProps) {
   const { tile, handleClick, handleRightClickTile } = props;
 
@@ -54,7 +56,9 @@ function Tile(props: TileProps) {
   else
     return (
       <Box
-        className={`tile open ${oddOrEven(tile)} ${getBorder(tile)}`}
+        className={`tile open ${oddOrEven(tile)} ${getBorder(
+          tile
+        )} ${isExploded(tile)}`}
         onContextMenu={(e) => e.preventDefault()}
       >
         {tile.mineCountSymbol === "bomb" ? (

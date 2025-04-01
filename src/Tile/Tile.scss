@@ -57,6 +57,11 @@
     background-color: var(--mui-palette-ground-light);
     border: 2px solid var(--mui-palette-ground-light);
   }
+
+  &.exploded {
+    background-color: var(--mui-palette-error-light);
+    border: 2px solid var(--mui-palette-error-light);
+  }
 }
 
 .one {
