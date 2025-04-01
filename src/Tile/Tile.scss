@@ -1,8 +1,13 @@
 .tile {
-  padding: 0.75rem;
+  padding: 0.5rem;
   flex: 1 1 100%;
-  min-width: 40px;
-  min-height: 40px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bolder;
 }
 
 .close {
@@ -12,6 +17,7 @@
 
   &.even {
     background-color: var(--mui-palette-grass-main);
+    border: 2px solid var(--mui-palette-grass-main);
   }
 
   &.even:hover {
@@ -20,6 +26,7 @@
 
   &.odd {
     background-color: var(--mui-palette-grass-dark);
+    border: 2px solid var(--mui-palette-grass-dark);
   }
 
   &.odd:hover {
@@ -43,9 +50,36 @@
 .open {
   &.even {
     background-color: var(--mui-palette-ground-main);
+    border: 2px solid var(--mui-palette-ground-main);
   }
 
   &.odd {
     background-color: var(--mui-palette-ground-light);
+    border: 2px solid var(--mui-palette-ground-light);
   }
+}
+
+.one {
+  color: var(--mui-palette-primary-dark);
+}
+.two {
+  color: #008200;
+}
+.three {
+  color: var(--mui-palette-warning-dark);
+}
+.four {
+  color: #000185;
+}
+.five {
+  color: var(--mui-palette-error-dark);
+}
+.six {
+  color: #008284;
+}
+.seven {
+  color: #840084;
+}
+.eight {
+  color: #757575;
 }

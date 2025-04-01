@@ -1,7 +1,8 @@
-import Box from "@mui/material/Box";
-import "./Tile.scss";
-import type { Tile } from "../types";
 import FlagIcon from "@mui/icons-material/Flag";
+import Box from "@mui/material/Box";
+import MineIcon from "../icons/mine.svg?react";
+import type { Tile } from "../types";
+import "./Tile.scss";
 
 interface TileProps {
   tile: Tile;
@@ -23,12 +24,15 @@ const getBorder = (tile: Tile): string => {
   return classNames;
 };
 
-const displaySymbol = (tile: Tile) => {
-  if (tile.open) {
-    return tile.mineCountSymbol === "bomb" ? "B" : tile.mineCountSymbol;
-  } else {
-    return tile.flagged ? <FlagIcon color="error" /> : "";
-  }
+const getMineCountColor = (count: Tile["mineCountSymbol"]) => {
+  if (count === "1") return "one";
+  if (count === "2") return "two";
+  if (count === "3") return "three";
+  if (count === "4") return "four";
+  if (count === "5") return "five";
+  if (count === "6") return "six";
+  if (count === "7") return "seven";
+  if (count === "8") return "eight";
 };
 
 function Tile(props: TileProps) {
@@ -44,13 +48,22 @@ function Tile(props: TileProps) {
           handleRightClickTile(tile);
         }}
       >
-        {displaySymbol(tile)}
+        {tile.flagged ? <FlagIcon color="error" /> : ""}
       </Box>
     );
   else
     return (
-      <Box className={`tile open ${oddOrEven(tile)} ${getBorder(tile)}`}>
-        {tile.mineCountSymbol === "bomb" ? "B" : tile.mineCountSymbol}
+      <Box
+        className={`tile open ${oddOrEven(tile)} ${getBorder(tile)}`}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        {tile.mineCountSymbol === "bomb" ? (
+          <MineIcon />
+        ) : (
+          <Box className={getMineCountColor(tile.mineCountSymbol)}>
+            {tile.mineCountSymbol === "0" ? "" : tile.mineCountSymbol}
+          </Box>
+        )}
       </Box>
     );
 }

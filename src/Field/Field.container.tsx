@@ -177,11 +177,10 @@ const openAllMinedTiles = (plot: Tile[][]) => {
   );
 };
 
-const calculateBorder = (plot: Tile[][]) => {
+const calculateAllTilesBorder = (plot: Tile[][]) => {
   for (let line = 0; line < plot.length; line += 1) {
     for (let column = 0; column < plot[line].length; column += 1) {
-      plot[line][column].up =
-        line - 1 >= 0 ? plot[line - 1][column].open : false;
+      if (line - 1 >= 0) plot[line][column].up = plot[line - 1][column].open;
 
       if (line + 1 <= plot.length - 1)
         plot[line][column].down = plot[line + 1][column].open;
@@ -195,6 +194,35 @@ const calculateBorder = (plot: Tile[][]) => {
   }
 
   return plot;
+};
+
+const calculateTileBorder = (tile: Tile, plot: Tile[][]) => {
+  const isTileNotOnFirstLine = tile.line - 1 >= 0;
+  const upperTile = isTileNotOnFirstLine
+    ? plot[tile.line - 1][tile.column]
+    : undefined;
+  if (isTileNotOnFirstLine && upperTile && !upperTile.open)
+    upperTile.down = true;
+
+  const isTileNotOnLastLine = tile.line + 1 <= plot.length - 1;
+  const lowerTile = isTileNotOnLastLine
+    ? plot[tile.line + 1][tile.column]
+    : undefined;
+  if (isTileNotOnLastLine && lowerTile && !lowerTile.open) lowerTile.up = true;
+
+  const isTileNotOnFirstColumn = tile.column - 1 >= 0;
+  const leftTile = isTileNotOnFirstColumn
+    ? plot[tile.line][tile.column - 1]
+    : undefined;
+  if (isTileNotOnFirstColumn && leftTile && !leftTile.open)
+    leftTile.right = true;
+
+  const isTileNotOnLastColumn = tile.column + 1 <= plot[tile.line].length - 1;
+  const rightTile = isTileNotOnLastColumn
+    ? plot[tile.line][tile.column + 1]
+    : undefined;
+  if (isTileNotOnLastColumn && rightTile && !rightTile.open)
+    rightTile.left = true;
 };
 
 const flagTile = (tile: Tile, plot: Tile[][]) => {
@@ -213,14 +241,18 @@ function FieldContainer(props: FieldContainerProps) {
 
     if (clickedTile.mineCountSymbol === "0") {
       const { plot: newPlot, wrongFlagCount } = openTileArea(clickedTile, plot);
-      const plotWithBorder = calculateBorder(newPlot).map((line) => [...line]);
+      const plotWithBorder = calculateAllTilesBorder(newPlot).map((line) => [
+        ...line,
+      ]);
       setPlot(plotWithBorder);
       setFlagCount((prevState) => prevState + wrongFlagCount);
     } else if (clickedTile.mineCountSymbol === "bomb") {
       const newPlot = openAllMinedTiles(plot);
-      setPlot(newPlot);
+      const plotWithBorder = calculateAllTilesBorder(newPlot);
+      setPlot(plotWithBorder);
     } else {
       plot[clickedTile.line][clickedTile.column].open = true;
+      calculateTileBorder(clickedTile, plot);
       const newPlot = plot.map((line) => [...line]);
       setPlot(newPlot);
     }
