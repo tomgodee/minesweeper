@@ -3,11 +3,6 @@ import type { Settings } from "../App";
 import type { MineCountSymbol, Tile } from "../types";
 import Field from "./Field";
 
-interface FieldContainerProps {
-  settings: Settings;
-  setFlagCount: React.Dispatch<React.SetStateAction<number>>;
-}
-
 const findSurroundingTiles = (
   plot: Tile[][],
   position: { line: number; column: number }
@@ -232,8 +227,14 @@ const flagTile = (tile: Tile, plot: Tile[][]) => {
   return plot;
 };
 
+interface FieldContainerProps {
+  settings: Settings;
+  setFlagCount: React.Dispatch<React.SetStateAction<number>>;
+  setOpenTileCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
 function FieldContainer(props: FieldContainerProps) {
-  const { settings, setFlagCount } = props;
+  const { settings, setFlagCount, setOpenTileCount } = props;
 
   const [plot, setPlot] = useState<Tile[][]>([[]]);
 
@@ -249,7 +250,6 @@ function FieldContainer(props: FieldContainerProps) {
       setFlagCount((prevState) => prevState + wrongFlagCount);
     } else if (clickedTile.mineCountSymbol === "bomb") {
       plot[clickedTile.line][clickedTile.column].exploded = true;
-      console.log("clickedTile", clickedTile);
       const newPlot = openAllMinedTiles(plot);
       const plotWithBorder = calculateAllTilesBorder(newPlot);
       setPlot(plotWithBorder);
@@ -289,6 +289,19 @@ function FieldContainer(props: FieldContainerProps) {
 
     setPlot(plotWithMineCount);
   }, [settings]);
+
+  useEffect(() => {
+    let openTileCount = 0;
+    for (let line = 0; line < plot.length; line += 1) {
+      for (let column = 0; column < plot[line].length; column += 1) {
+        openTileCount = plot[line][column].open
+          ? openTileCount + 1
+          : openTileCount;
+      }
+    }
+
+    setOpenTileCount(openTileCount);
+  }, [plot, setOpenTileCount]);
 
   return (
     <Field

@@ -14,10 +14,14 @@ interface HeaderProps {
   confirmSettings: (settings: Settings) => void;
   flagCount: number;
   settings: Settings;
+  openTileCount: number;
 }
 
 function Header(props: HeaderProps) {
-  const { open, setOpen, confirmSettings, flagCount, settings } = props;
+  const { open, setOpen, confirmSettings, flagCount, settings, openTileCount } =
+    props;
+
+  const tileCount = settings.width * settings.height;
 
   return (
     <>
@@ -27,7 +31,10 @@ function Header(props: HeaderProps) {
           <FlagIcon color="error" />
         </Box>
         <Box sx={{ width: "100%", margin: "0 2rem" }}>
-          <LinearProgress variant="determinate" value={50} />
+          <LinearProgress
+            variant="determinate"
+            value={(openTileCount / tileCount) * 100}
+          />
         </Box>
         <IconButton onClick={() => setOpen((prevState) => !prevState)}>
           <SettingsIcon color="primary" />

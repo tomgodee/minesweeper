@@ -22,6 +22,9 @@ function App() {
     difficulty: "easy",
   });
   const [flagCount, setFlagCount] = useState<number>(settings.mineCount);
+  const [openTileCount, setOpenTileCount] = useState<number>(
+    settings.width * settings.height
+  );
 
   return (
     <>
@@ -31,8 +34,13 @@ function App() {
           setSettings={setSettings}
           flagCount={flagCount}
           setFlagCount={setFlagCount}
+          openTileCount={openTileCount}
         />
-        <Field settings={settings} setFlagCount={setFlagCount} />
+        <Field
+          settings={settings}
+          setFlagCount={setFlagCount}
+          setOpenTileCount={setOpenTileCount}
+        />
       </Box>
     </>
   );
