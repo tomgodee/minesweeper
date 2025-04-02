@@ -1,7 +1,8 @@
 import "./App.css";
 
 import { Box } from "@mui/material";
-import { useState } from "react";
+import confetti from "canvas-confetti";
+import { useEffect, useState } from "react";
 import Field from "./Field";
 import Header from "./Header";
 import { easySettings } from "./Settings/Settings.constant";
@@ -16,6 +17,25 @@ function App() {
     settings.width * settings.height
   );
   const [gameState, setGameState] = useState<GameState>("starting");
+
+  useEffect(() => {
+    const options = { particleCount: 100, drift: -2 };
+    if (gameState === "won") {
+      confetti(options);
+      setTimeout(() => {
+        confetti({ ...options, drift: 2 });
+      }, 1000);
+      setTimeout(() => {
+        confetti({ ...options, drift: -1 });
+      }, 2000);
+      setTimeout(() => {
+        confetti({ ...options, drift: 1 });
+      }, 3000);
+      setTimeout(() => {
+        confetti({ ...options, drift: 0 });
+      }, 4000);
+    }
+  }, [gameState]);
 
   return (
     <>
