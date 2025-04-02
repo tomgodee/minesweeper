@@ -9,88 +9,42 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
-import {
-  customSettings,
-  easySettings,
-  hardSettings,
-  mediumSettings,
-} from "./Settings.constant";
-import "./Settings.scss";
 import type { Difficulty, Settings } from "../types";
+import { isDigit } from "./Settings.methods";
+import "./Settings.scss";
 
 interface SettingsProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   difficulty: Difficulty;
   setDifficulty: React.Dispatch<React.SetStateAction<Difficulty>>;
-  handleConfirm: (settings: Settings) => void;
   settings: Settings;
-}
-
-// TODO: Unit test needed
-const isDigit = (text: string) => text.match(/^\d+$/);
-
-function Settings(props: SettingsProps) {
-  const { open, setOpen, handleConfirm, difficulty, setDifficulty, settings } =
-    props;
-
-  const [customSettingsForm, setCustomSettingForm] = useState({
-    width: customSettings.width,
-    height: customSettings.height,
-    mineCount: customSettings.mineCount,
-  });
-
-  const handleFormChanged = ({
+  customSettingsForm: {
+    width: number;
+    height: number;
+    mineCount: number;
+  };
+  handleFormChanged: ({
     type,
     value,
   }: {
     type: "width" | "height" | "mineCount";
     value: string;
-  }) => {
-    if (isDigit(value) || value === "") {
-      const newValue = value === "" ? 0 : Number(value);
+  }) => void;
+  confirmDialog: () => void;
+}
 
-      setCustomSettingForm({
-        width: type === "width" ? newValue : customSettingsForm.width,
-        height: type === "height" ? newValue : customSettingsForm.height,
-        mineCount:
-          type === "mineCount" ? newValue : customSettingsForm.mineCount,
-      });
-    }
-  };
-
-  const confirmDialog = () => {
-    switch (difficulty) {
-      case "easy":
-        handleConfirm(easySettings);
-        break;
-      case "medium":
-        handleConfirm(mediumSettings);
-        break;
-      case "hard":
-        handleConfirm(hardSettings);
-        break;
-      case "custom":
-        handleConfirm({
-          difficulty: "custom",
-          ...customSettingsForm,
-        });
-        break;
-      // TODO: Randomize this option
-      case "surprise me":
-        handleConfirm({
-          width: 5,
-          height: 5,
-          mineCount: 5,
-          difficulty: "surprise me",
-        });
-        break;
-      default:
-        //TODO: Make a noti saying smth has gone wrong
-        handleConfirm(easySettings);
-    }
-  };
+function Settings(props: SettingsProps) {
+  const {
+    open,
+    setOpen,
+    difficulty,
+    setDifficulty,
+    settings,
+    customSettingsForm,
+    handleFormChanged,
+    confirmDialog,
+  } = props;
 
   return (
     <Dialog open={open} maxWidth="xs" fullWidth>
@@ -118,7 +72,7 @@ function Settings(props: SettingsProps) {
               label="Custom"
             />
             <FormControlLabel
-              value="surprise"
+              value="surprise me"
               control={<Radio />}
               label="Surprise me!"
             />
