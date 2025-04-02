@@ -4,25 +4,13 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import Field from "./Field";
 import Header from "./Header";
-
-export type Difficulty = "easy" | "medium" | "hard" | "custom" | "surprise me";
-
-export interface Settings {
-  width: number;
-  height: number;
-  mineCount: number;
-  difficulty: Difficulty;
-}
+import { easySettings } from "./Settings/Settings.constant";
+import { Settings } from "./types/settings";
 
 export type GameState = "starting" | "in progress" | "lost" | "won";
 
 function App() {
-  const [settings, setSettings] = useState<Settings>({
-    width: 3,
-    height: 4,
-    mineCount: 1,
-    difficulty: "easy",
-  });
+  const [settings, setSettings] = useState<Settings>(easySettings);
   const [flagCount, setFlagCount] = useState<number>(settings.mineCount);
   const [openTileCount, setOpenTileCount] = useState<number>(
     settings.width * settings.height
@@ -44,7 +32,6 @@ function App() {
         <Field
           settings={settings}
           setFlagCount={setFlagCount}
-          openTileCount={openTileCount}
           setOpenTileCount={setOpenTileCount}
           gameState={gameState}
           setGameState={setGameState}

@@ -9,10 +9,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
-import type { Settings } from "../App";
-import { Difficulty } from "../App";
-import "./Settings.scss";
 import { useState } from "react";
+import {
+  easySettings,
+  hardSettings,
+  mediumSettings,
+} from "./Settings.constant";
+import "./Settings.scss";
+import type { Difficulty, Settings } from "../types";
 
 interface SettingsProps {
   open: boolean;
@@ -22,25 +26,6 @@ interface SettingsProps {
   handleConfirm: (settings: Settings) => void;
   settings: Settings;
 }
-
-const easySettings: Settings = {
-  width: 3,
-  height: 4,
-  mineCount: 3,
-  difficulty: "easy",
-};
-const mediumSettings: Settings = {
-  width: 10,
-  height: 10,
-  mineCount: 8,
-  difficulty: "medium",
-};
-const hardSettings: Settings = {
-  width: 14,
-  height: 14,
-  mineCount: 40,
-  difficulty: "hard",
-};
 
 // TODO: Unit test needed
 const isDigit = (text: string) => text.match(/^\d+$/);

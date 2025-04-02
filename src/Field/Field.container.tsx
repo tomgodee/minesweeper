@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import type { GameState, Settings } from "../App";
-import type { MineCountSymbol, Tile } from "../types";
+import type { GameState } from "../App";
+import type { MineCountSymbol, Settings, Tile } from "../types";
 import Field from "./Field";
 
 const findSurroundingTiles = (
@@ -230,21 +230,14 @@ const flagTile = (tile: Tile, plot: Tile[][]) => {
 interface FieldContainerProps {
   settings: Settings;
   setFlagCount: React.Dispatch<React.SetStateAction<number>>;
-  openTileCount: number;
   setOpenTileCount: React.Dispatch<React.SetStateAction<number>>;
   gameState: GameState;
   setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
 
 function FieldContainer(props: FieldContainerProps) {
-  const {
-    settings,
-    setFlagCount,
-    // openTileCount,
-    setOpenTileCount,
-    gameState,
-    setGameState,
-  } = props;
+  const { settings, setFlagCount, setOpenTileCount, gameState, setGameState } =
+    props;
 
   const [plot, setPlot] = useState<Tile[][]>([[]]);
 
@@ -302,8 +295,9 @@ function FieldContainer(props: FieldContainerProps) {
       const plotWithMineCount = calculateMineCount(plot);
 
       setPlot(plotWithMineCount);
+      setFlagCount(settings.mineCount);
     }
-  }, [settings, gameState]);
+  }, [settings, gameState, setFlagCount]);
 
   useEffect(() => {
     let openTileCount = 0;

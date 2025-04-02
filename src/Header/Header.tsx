@@ -1,12 +1,13 @@
 import FlagIcon from "@mui/icons-material/Flag";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
-import type { GameState, Settings } from "../App";
+import type { GameState } from "../App";
 import SettingsComponent from "../Settings";
+import type { Settings } from "../types";
 import "./Header.scss";
 
 interface HeaderProps {
@@ -54,6 +55,8 @@ function Header(props: HeaderProps) {
             <SettingsIcon color="primary" />
           </IconButton>
         </Box>
+
+        {import.meta.env.DEV && gameState}
 
         <Box sx={{ width: "100%", marginTop: "1rem" }}>
           <LinearProgress

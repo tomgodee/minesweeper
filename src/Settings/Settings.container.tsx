@@ -1,6 +1,5 @@
 import { useState } from "react";
-import type { Settings } from "../App";
-import { Difficulty } from "../App";
+import type { Difficulty, Settings } from "../types";
 import SettingsComponent from "./Settings";
 
 interface SettingsContainerProps {

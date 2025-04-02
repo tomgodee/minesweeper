@@ -1,6 +1,7 @@
 import { useState } from "react";
-import type { GameState, Settings } from "../App";
+import type { GameState } from "../App";
 import Header from "./Header";
+import { Settings } from "../types";
 
 interface HeaderContainerProps {
   settings: Settings;
