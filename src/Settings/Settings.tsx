@@ -10,7 +10,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import type { Difficulty, Settings } from "../types";
-import { isDigit } from "./Settings.methods";
+import { isPositiveDigit } from "./Settings.methods";
 import "./Settings.scss";
 
 interface SettingsProps {
@@ -86,7 +86,7 @@ function Settings(props: SettingsProps) {
               label="Width"
               variant="outlined"
               error={
-                !isDigit(String(customSettingsForm.width)) ||
+                !isPositiveDigit(String(customSettingsForm.width)) ||
                 customSettingsForm.width > 30 ||
                 customSettingsForm.width < 4
               }
@@ -104,7 +104,7 @@ function Settings(props: SettingsProps) {
               label="Height"
               variant="outlined"
               error={
-                !isDigit(String(customSettingsForm.height)) ||
+                !isPositiveDigit(String(customSettingsForm.height)) ||
                 customSettingsForm.height > 30 ||
                 customSettingsForm.height < 4
               }
@@ -122,7 +122,7 @@ function Settings(props: SettingsProps) {
               label="Mine"
               variant="outlined"
               error={
-                !isDigit(String(customSettingsForm.mineCount)) ||
+                !isPositiveDigit(String(customSettingsForm.mineCount)) ||
                 customSettingsForm.mineCount >
                   (customSettingsForm.height * customSettingsForm.width) / 3 ||
                 customSettingsForm.mineCount < 1

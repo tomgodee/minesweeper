@@ -7,7 +7,11 @@ import {
   hardSettings,
   mediumSettings,
 } from "./Settings.constant";
-import { getRandomInt, getRandomRange, isDigit } from "./Settings.methods";
+import {
+  getRandomInt,
+  getRandomRange,
+  isPositiveDigit,
+} from "./Settings.methods";
 
 interface SettingsContainerProps {
   open: boolean;
@@ -33,7 +37,7 @@ function SettingsContainer(props: SettingsContainerProps) {
     type: "width" | "height" | "mineCount";
     value: string;
   }) => {
-    if (isDigit(value) || value === "") {
+    if (isPositiveDigit(value) || value === "") {
       const newValue = value === "" ? 0 : Number(value);
 
       setCustomSettingForm({

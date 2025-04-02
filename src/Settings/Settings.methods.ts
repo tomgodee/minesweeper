@@ -7,7 +7,6 @@ function getRandomInt(min: number, max: number) {
 const getRandomRange = (lower: number, upper: number) =>
   Math.random() * (upper - lower) + lower;
 
-// TODO: Unit test needed
-const isDigit = (text: string) => text.match(/^\d+$/);
+const isPositiveDigit = (text: string) => text.match(/^\d+$/);
 
-export { getRandomInt, getRandomRange, isDigit };
+export { getRandomInt, getRandomRange, isPositiveDigit };
