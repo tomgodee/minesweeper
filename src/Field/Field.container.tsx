@@ -311,9 +311,11 @@ function FieldContainer(props: FieldContainerProps) {
 
     for (let line = 0; line < plot.length; line += 1) {
       for (let column = 0; column < plot[line].length; column += 1) {
-        openTileCount = plot[line][column].open
-          ? openTileCount + 1
-          : openTileCount;
+        openTileCount =
+          plot[line][column].open &&
+          plot[line][column].mineCountSymbol !== "bomb"
+            ? openTileCount + 1
+            : openTileCount;
 
         if (plot[line][column].exploded) isBombExploded = true;
       }
