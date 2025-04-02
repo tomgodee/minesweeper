@@ -14,17 +14,20 @@ export interface Settings {
   difficulty: Difficulty;
 }
 
+export type GameState = "starting" | "in progress" | "lost" | "won";
+
 function App() {
   const [settings, setSettings] = useState<Settings>({
     width: 3,
     height: 4,
-    mineCount: 3,
+    mineCount: 1,
     difficulty: "easy",
   });
   const [flagCount, setFlagCount] = useState<number>(settings.mineCount);
   const [openTileCount, setOpenTileCount] = useState<number>(
     settings.width * settings.height
   );
+  const [gameState, setGameState] = useState<GameState>("starting");
 
   return (
     <>
@@ -35,11 +38,16 @@ function App() {
           flagCount={flagCount}
           setFlagCount={setFlagCount}
           openTileCount={openTileCount}
+          gameState={gameState}
+          setGameState={setGameState}
         />
         <Field
           settings={settings}
           setFlagCount={setFlagCount}
+          openTileCount={openTileCount}
           setOpenTileCount={setOpenTileCount}
+          gameState={gameState}
+          setGameState={setGameState}
         />
       </Box>
     </>

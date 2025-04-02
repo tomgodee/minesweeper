@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Settings } from "../App";
+import type { GameState, Settings } from "../App";
 import type { MineCountSymbol, Tile } from "../types";
 import Field from "./Field";
 
@@ -230,16 +230,27 @@ const flagTile = (tile: Tile, plot: Tile[][]) => {
 interface FieldContainerProps {
   settings: Settings;
   setFlagCount: React.Dispatch<React.SetStateAction<number>>;
+  openTileCount: number;
   setOpenTileCount: React.Dispatch<React.SetStateAction<number>>;
+  gameState: GameState;
+  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
 }
 
 function FieldContainer(props: FieldContainerProps) {
-  const { settings, setFlagCount, setOpenTileCount } = props;
+  const {
+    settings,
+    setFlagCount,
+    // openTileCount,
+    setOpenTileCount,
+    gameState,
+    setGameState,
+  } = props;
 
   const [plot, setPlot] = useState<Tile[][]>([[]]);
 
   const clickTile = (clickedTile: Tile) => {
-    if (clickedTile.flagged) return;
+    if (clickedTile.flagged || gameState === "lost" || gameState === "won")
+      return;
 
     if (clickedTile.mineCountSymbol === "0") {
       const { plot: newPlot, wrongFlagCount } = openTileArea(clickedTile, plot);
@@ -262,6 +273,8 @@ function FieldContainer(props: FieldContainerProps) {
   };
 
   const rightClickTile = (clickedTile: Tile) => {
+    if (gameState === "lost" || gameState === "won") return;
+
     if (!clickedTile.open && !clickedTile.flagged) {
       setFlagCount((prevState) => prevState - 1);
     } else if (clickedTile.flagged) {
@@ -273,35 +286,62 @@ function FieldContainer(props: FieldContainerProps) {
 
   // TODO: This effect should run when the first click happens, not on mounted
   useEffect(() => {
-    const tiles = generateTiles({
-      width: settings.width,
-      height: settings.height,
-    });
+    if (gameState === "starting") {
+      const tiles = generateTiles({
+        width: settings.width,
+        height: settings.height,
+      });
 
-    const tilesWithMines = generateMines(tiles, settings.mineCount);
+      const tilesWithMines = generateMines(tiles, settings.mineCount);
 
-    const plot = transformTilesToPlot(tilesWithMines, {
-      width: settings.width,
-      height: settings.height,
-    });
+      const plot = transformTilesToPlot(tilesWithMines, {
+        width: settings.width,
+        height: settings.height,
+      });
 
-    const plotWithMineCount = calculateMineCount(plot);
+      const plotWithMineCount = calculateMineCount(plot);
 
-    setPlot(plotWithMineCount);
-  }, [settings]);
+      setPlot(plotWithMineCount);
+    }
+  }, [settings, gameState]);
 
   useEffect(() => {
     let openTileCount = 0;
+    let isBombExploded = false;
+
     for (let line = 0; line < plot.length; line += 1) {
       for (let column = 0; column < plot[line].length; column += 1) {
         openTileCount = plot[line][column].open
           ? openTileCount + 1
           : openTileCount;
+
+        if (plot[line][column].exploded) isBombExploded = true;
       }
     }
 
+    const tileCount = settings.width * settings.height;
+    if (isBombExploded) {
+      setGameState("lost");
+    } else if (openTileCount + settings.mineCount === tileCount) {
+      setGameState("won");
+    } else if (
+      openTileCount > 0 &&
+      openTileCount + settings.mineCount < tileCount
+    ) {
+      setGameState("in progress");
+    } else if (openTileCount === 0) {
+      setGameState("starting");
+    }
+
     setOpenTileCount(openTileCount);
-  }, [plot, setOpenTileCount]);
+  }, [
+    plot,
+    setGameState,
+    setOpenTileCount,
+    settings.height,
+    settings.mineCount,
+    settings.width,
+  ]);
 
   return (
     <Field
