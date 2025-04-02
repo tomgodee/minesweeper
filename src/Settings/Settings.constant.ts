@@ -20,3 +20,10 @@ export const hardSettings: Settings = {
   mineCount: 60,
   difficulty: "hard",
 };
+
+export const customSettings: Settings = {
+  width: 10,
+  height: 10,
+  mineCount: 30,
+  difficulty: "custom",
+};

@@ -56,7 +56,7 @@ function Header(props: HeaderProps) {
           </IconButton>
         </Box>
 
-        {import.meta.env.DEV && gameState}
+        {import.meta.env.DEV && <Box textAlign="center">{gameState}</Box>}
 
         <Box sx={{ width: "100%", marginTop: "1rem" }}>
           <LinearProgress

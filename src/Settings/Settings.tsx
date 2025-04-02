@@ -11,6 +11,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import {
+  customSettings,
   easySettings,
   hardSettings,
   mediumSettings,
@@ -35,9 +36,9 @@ function Settings(props: SettingsProps) {
     props;
 
   const [customSettingsForm, setCustomSettingForm] = useState({
-    width: 10,
-    height: 10,
-    mineCount: 10,
+    width: customSettings.width,
+    height: customSettings.height,
+    mineCount: customSettings.mineCount,
   });
 
   const handleFormChanged = ({
@@ -132,7 +133,8 @@ function Settings(props: SettingsProps) {
               variant="outlined"
               error={
                 !isDigit(String(customSettingsForm.width)) ||
-                customSettingsForm.width > 30
+                customSettingsForm.width > 30 ||
+                customSettingsForm.width < 4
               }
               value={customSettingsForm.width}
               onChange={(event) =>
@@ -149,7 +151,8 @@ function Settings(props: SettingsProps) {
               variant="outlined"
               error={
                 !isDigit(String(customSettingsForm.height)) ||
-                customSettingsForm.height > 30
+                customSettingsForm.height > 30 ||
+                customSettingsForm.height < 4
               }
               value={customSettingsForm.height}
               onChange={(event) =>
@@ -167,7 +170,8 @@ function Settings(props: SettingsProps) {
               error={
                 !isDigit(String(customSettingsForm.mineCount)) ||
                 customSettingsForm.mineCount >
-                  (customSettingsForm.height * customSettingsForm.width) / 3
+                  (customSettingsForm.height * customSettingsForm.width) / 3 ||
+                customSettingsForm.mineCount < 1
               }
               value={customSettingsForm.mineCount}
               onChange={(event) =>
